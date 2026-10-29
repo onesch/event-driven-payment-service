@@ -1,5 +1,4 @@
-from fastapi import HTTPException, status
-
+from exceptions import ConflictException, NotFoundException
 from payment_service.models.payment import Payment
 from payment_service.schemas.payment import PaymentCreate
 from payment_service.db_service.payment import (
@@ -15,10 +14,8 @@ async def get(
     payment = await db_get(payment_id)
 
     if payment is None:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail="Payment not found",
-        )
+        raise NotFoundException(detail="Payment not found")
+
     return payment
 
 
@@ -33,9 +30,10 @@ async def create(
             existing_payment.amount != payment.amount
             or existing_payment.description != payment.description
         ):
-            raise HTTPException(
-                status_code=status.HTTP_409_CONFLICT,
-                detail="Idempotency-Key already used with different payment data",
+            raise ConflictException(
+                detail=(
+                    "Idempotency-Key already used with different payment data"
+                )
             )
         return existing_payment
 
