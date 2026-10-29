@@ -1,0 +1,25 @@
+[project]
+name = "event-driven-payment-service"
+version = "0.1.0"
+description = "Asynchronous payment processing service built with FastAPI, PostgreSQL, RabbitMQ, and SQLAlchemy, featuring the transactional outbox pattern, idempotency, retries, and dead-letter queues."
+readme = "README.md"
+authors = [
+    { name = "onesch" }
+]
+requires-python = ">=3.12"
+dependencies = [
+    "aio-pika>=10.1.1",
+    "alembic>=1.20.1",
+    "asyncpg>=0.32.0",
+    "fastapi[standard]>=0.159.1",
+    "sqlalchemy[asyncio]>=2.1.6",
+    "uvicorn>=0.54.0",
+]
+
+[build-system]
+requires = ["uv_build>=0.12.21,<0.13.0"]
+build-backend = "uv_build"
+
+[tool.uv.build-backend]
+module-name = ["database", "payment_service", "payment_worker", "webhook_service"]
+module-root = "src"
