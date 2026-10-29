@@ -6,6 +6,7 @@ from payment_service.service.payment import (
 )
 from payment_service.schemas.payment import (
     PaymentGet,
+    PaymentCreateResponse,
     PaymentCreate,
 )
 
@@ -26,7 +27,7 @@ async def get_payment(payment_id: int):
 
 @router.post(
     "/",
-    response_model=PaymentGet,
+    response_model=PaymentCreateResponse,
     status_code=status.HTTP_202_ACCEPTED,
 )
 async def create_payment(

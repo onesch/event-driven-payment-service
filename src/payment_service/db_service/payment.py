@@ -6,7 +6,7 @@ from payment_service.models.payment import Payment
 
 
 async def db_get_by_idempotency_key(
-    idempotency_key: str
+    idempotency_key: str,
 ) -> Payment | None:
     async with async_session_maker() as session:
         result = await session.execute(
@@ -17,7 +17,9 @@ async def db_get_by_idempotency_key(
         return result.scalar_one_or_none()
 
 
-async def db_get(id: int) -> Payment | None:
+async def db_get(
+    id: int,
+) -> Payment | None:
     async with async_session_maker() as session:
         result = await session.execute(
             select(Payment).where(
@@ -29,16 +31,15 @@ async def db_get(id: int) -> Payment | None:
 
 async def db_create(
     idempotency_key: str,
-    description: str | None,
     amount: Decimal,
-):
+    description: str | None,
+) -> Payment:
     async with async_session_maker() as session:
         payment = Payment(
             idempotency_key=idempotency_key,
-            description=description,
             amount=amount,
+            description=description,
         )
-
         session.add(payment)
         await session.commit()
         await session.refresh(payment)

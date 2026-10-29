@@ -1,5 +1,6 @@
 from fastapi import HTTPException, status
 
+from payment_service.models.payment import Payment
 from payment_service.schemas.payment import PaymentCreate
 from payment_service.db_service.payment import (
     db_get,
@@ -8,7 +9,9 @@ from payment_service.db_service.payment import (
 )
 
 
-async def get(payment_id: int):
+async def get(
+    payment_id: int,
+) -> Payment:
     payment = await db_get(payment_id)
 
     if payment is None:
@@ -16,14 +19,13 @@ async def get(payment_id: int):
             status_code=status.HTTP_404_NOT_FOUND,
             detail="Payment not found",
         )
-
     return payment
 
 
 async def create(
     payment: PaymentCreate,
     idempotency_key: str,
-):
+) -> Payment:
     existing_payment = await db_get_by_idempotency_key(idempotency_key)
 
     if existing_payment is not None:
@@ -35,12 +37,11 @@ async def create(
                 status_code=status.HTTP_409_CONFLICT,
                 detail="Idempotency-Key already used with different payment data",
             )
-
         return existing_payment
 
     payment = await db_create(
         idempotency_key=idempotency_key,
-        description=payment.description,
         amount=payment.amount,
+        description=payment.description,
     )
     return payment

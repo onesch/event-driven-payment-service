@@ -33,8 +33,8 @@ class Payment(Base):
     id: Mapped[int] = mapped_column(primary_key=True)
     idempotency_key: Mapped[str] = mapped_column(String(100), nullable=False)
 
-    description: Mapped[str | None] = mapped_column(String(255), nullable=True)
     amount: Mapped[Decimal] = mapped_column(Numeric(precision=12, scale=2), nullable=False)
+    description: Mapped[str | None] = mapped_column(String(255), nullable=True)
 
     # currency
     # metadata_json
