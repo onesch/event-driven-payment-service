@@ -11,3 +11,10 @@ ALTER DATABASE <db_name> OWNER TO <user_name>;
 
 psql -U <user_name> -d <db_name>
 ```
+
+
+```bash
+uv run alembic revision --autogenerate
+
+uv run alembic upgrade head
+```
