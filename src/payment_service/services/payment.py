@@ -4,11 +4,13 @@ from exceptions import ConflictException, NotFoundException
 from payment_service.models.payment import Payment
 from payment_service.schemas.payment import PaymentCreate
 from payment_service.repositories.payment import PaymentRepository
+from outbox_service.repositories.outbox import OutboxRepository
 
 
 class PaymentService:
     def __init__(self, session: AsyncSession):
         self.repository = PaymentRepository(session)
+        self.outbox_repository = OutboxRepository(session)
 
     async def get(
         self, payment_id: int,
@@ -39,8 +41,16 @@ class PaymentService:
                 )
             return existing_payment
 
-        return await self.repository.create(
+        new_payment = await self.repository.create(
             idempotency_key=idempotency_key,
             amount=payment.amount,
             description=payment.description,
         )
+
+        await self.outbox_repository.create(
+            event_type="payment.created",
+            payload={
+                "payment_id": new_payment.id,
+            },
+        )
+        return new_payment
