@@ -1,9 +1,9 @@
-from fastapi import APIRouter, status, Header
+from typing import Annotated
+from fastapi import APIRouter, status, Header, Depends
+from sqlalchemy.ext.asyncio import AsyncSession
 
-from payment_service.service.payment import (
-    get,
-    create,
-)
+from database.database import get_db
+from payment_service.services.payment import PaymentService
 from payment_service.schemas.payment import (
     PaymentGet,
     PaymentCreateResponse,
@@ -21,8 +21,13 @@ router = APIRouter(
     response_model=PaymentGet,
     status_code=status.HTTP_200_OK,
 )
-async def get_payment(payment_id: int):
-    return await get(payment_id)
+async def get_payment(
+    payment_id: int,
+    session: Annotated[AsyncSession, Depends(get_db)],
+):
+    service = PaymentService(session)
+
+    return await service.get(payment_id)
 
 
 @router.post(
@@ -32,7 +37,9 @@ async def get_payment(payment_id: int):
 )
 async def create_payment(
     data: PaymentCreate,
+    session: Annotated[AsyncSession, Depends(get_db)],
     idempotency_key: str = Header(alias="Idempotency-Key", min_length=1, max_length=100),
 ):
-    payment = await create(data, idempotency_key)
-    return payment
+    service = PaymentService(session)
+
+    return await service.create(data, idempotency_key)
