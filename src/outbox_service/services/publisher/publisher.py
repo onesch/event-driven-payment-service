@@ -10,7 +10,7 @@ from faststream.rabbit import (
 from database.database import async_session_maker
 from outbox_service.repositories.outbox import OutboxRepository
 from outbox_service.services.publisher.event_router import EVENT_ROUTES
-from settings import REBBITMQ_URL
+from settings import RABBITMQ_URL
 
 logger = logging.getLogger(__name__)
 
@@ -127,7 +127,7 @@ class OutboxPublisher:
 
 async def main() -> None:
     """Initialize RabbitMQ topology and start the publisher."""
-    broker = RabbitBroker(url=REBBITMQ_URL)
+    broker = RabbitBroker(url=RABBITMQ_URL)
 
     async with broker:
         publisher = OutboxPublisher(broker)
