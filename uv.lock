@@ -339,6 +339,49 @@ wheels = [
 ]
 
 [[package]]
+name = "event-driven-payment-service"
+version = "0.1.0"
+source = { editable = "." }
+dependencies = [
+    { name = "aio-pika" },
+    { name = "alembic" },
+    { name = "asyncpg" },
+    { name = "fastapi", extra = ["standard"] },
+    { name = "faststream", extra = ["rabbit"] },
+    { name = "sqlalchemy", extra = ["asyncio"] },
+    { name = "uvicorn" },
+]
+
+[package.metadata]
+requires-dist = [
+    { name = "aio-pika", specifier = ">=10.1.1" },
+    { name = "alembic", specifier = ">=1.20.1" },
+    { name = "asyncpg", specifier = ">=0.32.0" },
+    { name = "fastapi", extras = ["standard"], specifier = ">=0.159.1" },
+    { name = "faststream", extras = ["rabbit"], specifier = ">=0.7.8" },
+    { name = "sqlalchemy", extras = ["asyncio"], specifier = ">=2.1.6" },
+    { name = "uvicorn", specifier = ">=0.54.0" },
+]
+
+[[package]]
+name = "fast-depends"
+version = "3.0.10"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "anyio" },
+    { name = "typing-extensions" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/3a/76/1e67c34a18a75aff77f25de2d56de8ad3d38c05915ae513ba35293fd920b/fast_depends-3.0.10.tar.gz", hash = "sha256:234c1dcfcdbc1cdb0ebe543fbf8e8234c069ba39518fbdf1f71dad6e3e6111ad", size = 19807, upload-time = "2026-10-28T07:36:21.82Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/1e/af/af933c80bd2c60070dec7ea324350ce698d579bada6ab6511800f749ab57/fast_depends-3.0.10-py3-none-any.whl", hash = "sha256:e49306f54b691a59076e6fe1fdae9418bff4af80d1c9d9fb82a6d517b4d4c04c", size = 25535, upload-time = "2026-10-28T07:36:20.374Z" },
+]
+
+[package.optional-dependencies]
+pydantic = [
+    { name = "pydantic" },
+]
+
+[[package]]
 name = "fastapi"
 version = "0.159.1"
 source = { registry = "https://pypi.org/simple" }
@@ -514,6 +557,25 @@ wheels = [
     { url = "https://files.pythonhosted.org/packages/51/45/72c2bf5ae3386407009fe51c40e548e41f70181bbe34a6477bb6078be047/fastar-0.12.0-cp315-cp315t-win32.whl", hash = "sha256:39dad3351f1399cd28e2e649b6651299ef857df6c745e598b00b4167dcf93dbc", size = 449932, upload-time = "2026-08-20T09:12:10.589Z" },
     { url = "https://files.pythonhosted.org/packages/7f/74/0adeb47b838c62ebd78bdf11ee2255e6e205ea176f9147978efa022ef855/fastar-0.12.0-cp315-cp315t-win_amd64.whl", hash = "sha256:00cda9a3f11871261a4e77a3b8f0eede85c9730fb7516811bcbcf96a2bb3b75b", size = 482858, upload-time = "2026-08-20T09:11:53.714Z" },
     { url = "https://files.pythonhosted.org/packages/bf/b9/b2ce5a79c57150d36aa8e0514dd65999ea76f091242aba93c403cd20e491/fastar-0.12.0-cp315-cp315t-win_arm64.whl", hash = "sha256:e8e0fb057b5c271f46f3300b539b0d3dab8c8cb2515205a37c818c2f68d16806", size = 458287, upload-time = "2026-08-20T09:11:36.952Z" },
+]
+
+[[package]]
+name = "faststream"
+version = "0.7.8"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "anyio" },
+    { name = "fast-depends", extra = ["pydantic"] },
+    { name = "typing-extensions" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/87/b6/d15b1c88f1adc3bf11e4e23f8a057e489e2e60a47f7d4b821a3ae264f4c2/faststream-0.7.8.tar.gz", hash = "sha256:9e367d9ba8b59eeafad19f46641b11f20d23a7ed75ea27b2503856a8ae0c075a", size = 392145, upload-time = "2026-10-22T20:50:29.387Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/a5/79/daae6f842665756f5fa45683d4762333348c4ad4dba2e9d9f37644717d74/faststream-0.7.8-py3-none-any.whl", hash = "sha256:ffe412278cf116216078dcf29dcec93274994a98d036be2bc388071dff7e259e", size = 618852, upload-time = "2026-10-22T20:50:27.388Z" },
+]
+
+[package.optional-dependencies]
+rabbit = [
+    { name = "aio-pika" },
 ]
 
 [[package]]
@@ -922,29 +984,6 @@ source = { registry = "https://pypi.org/simple" }
 sdist = { url = "https://files.pythonhosted.org/packages/d6/54/cfe61301667036ec958cb99bd3efefba235e65cdeb9c84d24a8293ba1d90/mdurl-0.1.2.tar.gz", hash = "sha256:bb413d29f5eea38f31dd4754dd7377d4465116fb207585f97bf925588687c1ba", size = 8729, upload-time = "2022-08-14T12:40:10.846Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/b3/38/89ba8ad64ae25be8de66a6d463314cf1eb366222074cfda9ee839c56a4b4/mdurl-0.1.2-py3-none-any.whl", hash = "sha256:84008a41e51615a49fc9966191ff91509e3c40b939176e643fd50a5c2196b8f8", size = 9979, upload-time = "2022-08-14T12:40:09.779Z" },
-]
-
-[[package]]
-name = "event-driven-payment-service"
-version = "0.1.0"
-source = { editable = "." }
-dependencies = [
-    { name = "aio-pika" },
-    { name = "alembic" },
-    { name = "asyncpg" },
-    { name = "fastapi", extra = ["standard"] },
-    { name = "sqlalchemy", extra = ["asyncio"] },
-    { name = "uvicorn" },
-]
-
-[package.metadata]
-requires-dist = [
-    { name = "aio-pika", specifier = ">=10.1.1" },
-    { name = "alembic", specifier = ">=1.20.1" },
-    { name = "asyncpg", specifier = ">=0.32.0" },
-    { name = "fastapi", extras = ["standard"], specifier = ">=0.159.1" },
-    { name = "sqlalchemy", extras = ["asyncio"], specifier = ">=2.1.6" },
-    { name = "uvicorn", specifier = ">=0.54.0" },
 ]
 
 [[package]]

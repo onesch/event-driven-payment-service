@@ -1,4 +1,6 @@
 from typing import Any
+from datetime import datetime, timezone
+from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from outbox_service.models.outbox import Outbox
@@ -7,6 +9,9 @@ from outbox_service.models.outbox import Outbox
 class OutboxRepository:
     def __init__(self, session: AsyncSession):
         self.session = session
+
+    async def get_by_id(self, event_id: int) -> Outbox | None:
+        return await self.session.get(Outbox, event_id)
 
     async def create(
         self,
@@ -21,3 +26,19 @@ class OutboxRepository:
         await self.session.flush()
 
         return event
+
+    async def get_unpublished(
+        self,
+        limit: int = 100,
+    ) -> list[Outbox]:
+        result = await self.session.scalars(
+            select(Outbox)
+            .where(Outbox.published_at.is_(None))  # get unpublished
+            .order_by(Outbox.created_at, Outbox.id)
+            .limit(limit)
+        )
+        return list(result.all())
+
+    async def mark_published(self, event: Outbox) -> None:
+        event.published_at = datetime.now(timezone.utc)
+        await self.session.flush()
