@@ -7,6 +7,7 @@ from alembic import context
 
 from database.models.base import Base
 from payment_service.models.payment import Payment
+from outbox_service.models.outbox import Outbox
 from settings import DATABASE_URL
 
 # this is the Alembic Config object, which provides

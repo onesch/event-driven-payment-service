@@ -9,13 +9,8 @@ class PaymentRepository:
     def __init__(self, session: AsyncSession):
         self.session = session
 
-    async def get_by_id(
-        self, payment_id: int,
-    ) -> Payment | None:
-        result = await self.session.execute(
-            select(Payment).where(Payment.id == payment_id)
-        )
-        return result.scalar_one_or_none()
+    async def get_by_id(self, payment_id: int) -> Payment | None:
+        return await self.session.get(Payment, payment_id)
 
     async def get_by_idempotency_key(
         self,

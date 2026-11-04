@@ -42,5 +42,5 @@ class Payment(Base):
 
     status: Mapped[PaymentStatus] = mapped_column(payment_status_type, default=PaymentStatus.PENDING, nullable=False)
 
-    created_at: Mapped[datetime] = mapped_column(server_default=func.now(), nullable=False)
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now(), nullable=False)
     processed_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
