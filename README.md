@@ -67,7 +67,7 @@ docker compose exec api uv run alembic upgrade head
 docker compose up -d            # Starting already-built services
 docker compose down             # Stopping services without deleting data
 docker compose ps               # Viewing running containers
-docker compose logs -f          # Viewing logs for all services 
+docker compose logs -f          # Viewing logs for all services
 
 # Connecting to PostgreSQL inside Docker
 docker compose exec postgres psql -U <user_name> -d <db_name>
@@ -76,9 +76,8 @@ docker compose exec postgres psql -U <user_name> -d <db_name>
 
 ## Testing
 
-#### 1. API
+1. Create a payment
 
-Create payment:
 ```bash
 curl -X POST http://localhost:9000/api/v1/payments/ \
   -H "Content-Type: application/json" \
@@ -87,4 +86,10 @@ curl -X POST http://localhost:9000/api/v1/payments/ \
     "amount": "1.00",
     "description": "text"
   }'
+```
+
+2. Check RabbitMQ queues
+
+```bash
+docker compose exec rabbitmq rabbitmqctl list_queues name messages_ready messages_unacknowledged durable
 ```

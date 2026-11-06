@@ -8,6 +8,11 @@ class EventRoute:
     queue: str
 
 
+# Define the mapping of event types to their corresponding routes.
 EVENT_ROUTES: dict[str, EventRoute] = {
-    "payment.created": EventRoute(exchange="payments", routing_key="payments.created", queue="payments.new"),
+    "payment.created": EventRoute(
+        exchange="payments",
+        routing_key="payments.created",
+        queue="payments.new"
+    ),
 }
