@@ -17,7 +17,9 @@ services:
 
   rabbitmq:
     image: rabbitmq:4-management
+    hostname: rabbitmq
     environment:
+      RABBITMQ_NODENAME: rabbit@rabbitmq
       RABBITMQ_DEFAULT_USER: ${RABBITMQ_USER}
       RABBITMQ_DEFAULT_PASS: ${RABBITMQ_PASSWORD}
     healthcheck:
