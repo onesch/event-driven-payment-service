@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 
-from src.payment_service.api.v1.payment import router as payment_v1_router
+from payment_service.api.v1.payment import router as payment_v1_router
 
 def create_app() -> FastAPI:
     """

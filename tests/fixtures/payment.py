@@ -1,0 +1,49 @@
+import pytest
+from unittest.mock import AsyncMock
+from sqlalchemy.ext.asyncio import AsyncSession
+from datetime import datetime, timezone
+from decimal import Decimal
+
+from outbox_service.repositories.outbox import OutboxRepository
+from payment_service.models.payment import Payment, PaymentStatus
+from payment_service.repositories.payment import PaymentRepository
+from payment_service.schemas.payment import PaymentCreate
+from payment_service.services.payment import PaymentService
+
+
+@pytest.fixture
+def payment_data() -> dict:
+    """Payment payload used across the test suite."""
+    return {
+        "id": 1,
+        "idempotency_key": "idem-key-123",
+        "amount": Decimal("100.00"),
+        "description": "Test payment",
+        "status": PaymentStatus.PENDING,
+        "created_at": datetime(2026, 1, 1, 12, 0, tzinfo=timezone.utc),
+        "processed_at": None,
+    }
+
+
+@pytest.fixture
+def payment(payment_data) -> Payment:
+    """Payment ORM instance matching ``payment_data`` (no DB involved)."""
+    return Payment(**payment_data)
+
+
+@pytest.fixture
+def payment_create() -> PaymentCreate:
+    """Valid input schema for the create-payment endpoint."""
+    return PaymentCreate(
+        amount=Decimal("100.00"),
+        description="Test payment",
+    )
+
+
+@pytest.fixture
+def payment_service() -> PaymentService:
+    """PaymentService with mocked repositories."""
+    service = PaymentService(AsyncMock(spec=AsyncSession))
+    service.repository = AsyncMock(spec=PaymentRepository)
+    service.outbox_repository = AsyncMock(spec=OutboxRepository)
+    return service

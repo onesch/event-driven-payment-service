@@ -17,14 +17,17 @@ dependencies = [
     "uvicorn>=0.54.0",
 ]
 
-[build-system]
-requires = ["uv_build>=0.12.21,<0.13.0"]
-build-backend = "uv_build"
-
-[tool.uv.build-backend]
-module-name = [
-    "database",
-    "payment_service",
-    "outbox_service",
+[dependency-groups]
+dev = [
+    "httpx>=0.28.1",
+    "pytest>=9.2.0",
+    "pytest-asyncio>=1.4.1.post1",
 ]
-module-root = "src"
+
+[tool.pytest.ini_options]
+pythonpath = ["."]
+testpaths = ["tests"]
+
+asyncio_mode = "auto"
+asyncio_default_fixture_loop_scope = "function"
+asyncio_default_test_loop_scope = "function"
