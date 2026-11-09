@@ -6,6 +6,10 @@ from payment_service.models.payment import Payment
 
 
 class PaymentRepository:
+    """
+    Repository for managing Payment entities in the database.
+    """
+
     def __init__(self, session: AsyncSession):
         self.session = session
 

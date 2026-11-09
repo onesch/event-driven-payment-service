@@ -21,6 +21,10 @@ payment_status_type = SQLAlchemyEnum(
 
 
 class Payment(Base):
+    """
+    SQLAlchemy model representing a Payment entity in the database.
+    """
+
     __tablename__ = "payments"
 
     __table_args__ = (

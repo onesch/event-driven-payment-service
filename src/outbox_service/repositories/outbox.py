@@ -7,6 +7,10 @@ from outbox_service.models.outbox import Outbox
 
 
 class OutboxRepository:
+    """
+    Repository for managing Outbox events in the database.
+    """
+
     def __init__(self, session: AsyncSession):
         self.session = session
 

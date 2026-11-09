@@ -8,6 +8,10 @@ from database.models.base import Base
 
 
 class Outbox(Base):
+    """
+    SQLAlchemy model representing an Outbox event in the database.
+    """
+
     __tablename__ = "outbox"
 
     id: Mapped[int] = mapped_column(primary_key=True)

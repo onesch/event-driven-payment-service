@@ -22,5 +22,9 @@ requires = ["uv_build>=0.12.21,<0.13.0"]
 build-backend = "uv_build"
 
 [tool.uv.build-backend]
-module-name = ["database", "payment_service", "payment_worker", "webhook_service"]
+module-name = [
+    "database",
+    "payment_service",
+    "outbox_service",
+]
 module-root = "src"
