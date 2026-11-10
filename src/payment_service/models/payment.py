@@ -5,7 +5,7 @@ from enum import Enum
 from sqlalchemy import DateTime, Enum as SQLAlchemyEnum, Numeric, String, UniqueConstraint, func
 from sqlalchemy.orm import Mapped, mapped_column
 
-from database.models.base import Base
+from src.database.models.base import Base
 
 
 class PaymentStatus(str, Enum):

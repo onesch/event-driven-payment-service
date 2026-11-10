@@ -4,11 +4,11 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from datetime import datetime, timezone
 from decimal import Decimal
 
-from outbox_service.repositories.outbox import OutboxRepository
-from payment_service.models.payment import Payment, PaymentStatus
-from payment_service.repositories.payment import PaymentRepository
-from payment_service.schemas.payment import PaymentCreate
-from payment_service.services.payment import PaymentService
+from src.outbox_service.repositories.outbox import OutboxRepository
+from src.payment_service.models.payment import Payment, PaymentStatus
+from src.payment_service.repositories.payment import PaymentRepository
+from src.payment_service.schemas.payment import PaymentCreate
+from src.payment_service.services.payment import PaymentService
 
 
 @pytest.fixture
@@ -38,6 +38,12 @@ def payment_create() -> PaymentCreate:
         amount=Decimal("100.00"),
         description="Test payment",
     )
+
+
+@pytest.fixture
+def payment_repository() -> PaymentRepository:
+    """PaymentRepository with a mocked database session."""
+    return PaymentRepository(AsyncMock(spec=AsyncSession))
 
 
 @pytest.fixture

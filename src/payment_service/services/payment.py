@@ -1,10 +1,10 @@
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from exceptions import ConflictException, NotFoundException
-from payment_service.models.payment import Payment
-from payment_service.schemas.payment import PaymentCreate
-from payment_service.repositories.payment import PaymentRepository
-from outbox_service.repositories.outbox import OutboxRepository
+from src.exceptions import ConflictException, NotFoundException
+from src.payment_service.models.payment import Payment
+from src.payment_service.schemas.payment import PaymentCreate
+from src.payment_service.repositories.payment import PaymentRepository
+from src.outbox_service.repositories.outbox import OutboxRepository
 
 
 class PaymentService:

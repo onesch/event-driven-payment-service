@@ -4,7 +4,7 @@ from sqlalchemy import DateTime, Index, String, func, text
 from sqlalchemy.dialects.postgresql import JSONB
 from sqlalchemy.orm import Mapped, mapped_column
 
-from database.models.base import Base
+from src.database.models.base import Base
 
 
 class Outbox(Base):

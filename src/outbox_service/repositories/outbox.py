@@ -3,7 +3,7 @@ from datetime import datetime, timezone
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from outbox_service.models.outbox import Outbox
+from src.outbox_service.models.outbox import Outbox
 
 
 class OutboxRepository:

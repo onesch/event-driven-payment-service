@@ -1,8 +1,8 @@
 import pytest
 from decimal import Decimal
-from exceptions import ConflictException, NotFoundException
-from payment_service.models.payment import PaymentStatus
-from payment_service.schemas.payment import PaymentCreate
+from src.exceptions import ConflictException, NotFoundException
+from src.payment_service.models.payment import PaymentStatus
+from src.payment_service.schemas.payment import PaymentCreate
 
 
 # Test cases for PaymentService.get() method

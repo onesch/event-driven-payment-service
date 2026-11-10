@@ -2,7 +2,7 @@ from decimal import Decimal
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from payment_service.models.payment import Payment
+from src.payment_service.models.payment import Payment
 
 
 class PaymentRepository:
