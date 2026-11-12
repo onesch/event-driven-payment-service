@@ -1,7 +1,6 @@
+import pytest
 from datetime import datetime, timezone
 from unittest.mock import AsyncMock, Mock
-
-import pytest
 from aio_pika import RobustExchange, RobustQueue
 from faststream.rabbit import RabbitBroker
 from sqlalchemy.ext.asyncio import AsyncSession
