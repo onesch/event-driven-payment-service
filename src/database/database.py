@@ -20,6 +20,10 @@ async_session_maker = async_sessionmaker(
 )
 
 async def get_db() -> AsyncGenerator[AsyncSession, None]:
+    """
+    Async generator that yields the session.
+    Commits the session if no exception occurs, otherwise rollsback.
+    """
     async with async_session_maker() as session:
         try:
             yield session
