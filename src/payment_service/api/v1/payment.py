@@ -2,9 +2,9 @@ from typing import Annotated
 from fastapi import APIRouter, status, Header, Depends
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from database.database import get_db
-from payment_service.services.payment import PaymentService
-from payment_service.schemas.payment import (
+from src.database.database import get_db
+from src.payment_service.services.payment import PaymentService
+from src.payment_service.schemas.payment import (
     PaymentGet,
     PaymentCreateResponse,
     PaymentCreate,

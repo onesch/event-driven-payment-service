@@ -1,14 +1,15 @@
 import pytest
-from unittest.mock import AsyncMock
+from unittest.mock import AsyncMock, Mock
 from sqlalchemy.ext.asyncio import AsyncSession
 from datetime import datetime, timezone
 from decimal import Decimal
 
 from src.outbox_service.repositories.outbox import OutboxRepository
 from src.payment_service.models.payment import Payment, PaymentStatus
-from src.payment_service.repositories.payment import PaymentRepository
 from src.payment_service.schemas.payment import PaymentCreate
+from src.payment_service.repositories.payment import PaymentRepository
 from src.payment_service.services.payment import PaymentService
+from src.payment_service.api.v1 import payment as api_payment_module
 
 
 @pytest.fixture
@@ -53,3 +54,19 @@ def payment_service() -> PaymentService:
     service.repository = AsyncMock(spec=PaymentRepository)
     service.outbox_repository = AsyncMock(spec=OutboxRepository)
     return service
+
+
+@pytest.fixture
+def api_payment_service(
+    monkeypatch: pytest.MonkeyPatch,
+) -> AsyncMock:
+    """Mock PaymentService used by API-layer tests."""
+    service_mock = AsyncMock(spec=PaymentService)
+
+    monkeypatch.setattr(
+        api_payment_module,
+        "PaymentService",
+        Mock(return_value=service_mock),
+    )
+
+    return service_mock
