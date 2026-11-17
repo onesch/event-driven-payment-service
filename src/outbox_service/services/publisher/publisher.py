@@ -10,10 +10,10 @@ from faststream.rabbit import (
     ExchangeType,
 )
 
-from database.database import async_session_maker
-from outbox_service.repositories.outbox import OutboxRepository
-from outbox_service.services.publisher.event_router import EVENT_ROUTES
-from settings import RABBITMQ_URL
+from src.database.database import async_session_maker
+from src.outbox_service.repositories.outbox import OutboxRepository
+from src.outbox_service.services.publisher.event_router import EVENT_ROUTES
+from src.settings import RABBITMQ_URL
 
 logger = logging.getLogger(__name__)
 

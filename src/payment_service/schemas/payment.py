@@ -2,7 +2,7 @@ from datetime import datetime
 from decimal import Decimal
 from pydantic import BaseModel, ConfigDict, Field
 
-from payment_service.models.payment import PaymentStatus
+from src.payment_service.models.payment import PaymentStatus
 
 
 class PaymentCreateResponse(BaseModel):

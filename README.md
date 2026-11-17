@@ -1,3 +1,6 @@
+![Coverage](https://img.shields.io/badge/Coverage-96%25-brightgreen)
+![python](https://img.shields.io/badge/Python-v1.12.0-blue)
+
 ## Guide
 
 #### 1. PostgreSQL
@@ -92,4 +95,11 @@ curl -X POST http://localhost:9000/api/v1/payments/ \
 
 ```bash
 docker compose exec rabbitmq rabbitmqctl list_queues name messages_ready messages_unacknowledged durable
+```
+
+3. Run tests
+```
+uv run pytest
+
+uv run pytest --cov --cov-report=term-missing --cov-config=.coveragerc
 ```
