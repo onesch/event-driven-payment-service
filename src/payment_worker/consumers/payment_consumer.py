@@ -40,7 +40,7 @@ async def handle_payment(message: dict) -> None:
 
     if payment_id is None:
         logger.error("Received payment event without payment_id: %s", message)
-        return
+        raise ValueError("Payment event must contain payment_id")
 
     logger.info("Received payment event: payment_id=%s", payment_id)
 
@@ -59,7 +59,7 @@ async def main() -> None:
     try:
         await asyncio.Event().wait()
     finally:
-        await broker.close()
+        await broker.stop()
 
 
 if __name__ == "__main__":
