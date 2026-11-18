@@ -12,8 +12,7 @@ from faststream.rabbit import (
 
 from src.database.database import async_session_maker
 from src.outbox_service.repositories.outbox import OutboxRepository
-from src.outbox_service.services.publisher.event_router import EVENT_ROUTES
-from src.settings import RABBITMQ_URL
+from src.settings import EVENT_ROUTES, RABBITMQ_URL
 
 logger = logging.getLogger(__name__)
 

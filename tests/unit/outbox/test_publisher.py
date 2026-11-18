@@ -6,9 +6,9 @@ from aio_pika.exceptions import AMQPException
 from faststream.rabbit import ExchangeType
 from sqlalchemy.exc import SQLAlchemyError
 
-from src.outbox_service.services.publisher import publisher as publisher_module
-from src.outbox_service.services.publisher.event_router import EVENT_ROUTES
-from src.outbox_service.services.publisher.publisher import (
+from src.settings import EVENT_ROUTES
+from src.outbox_service.services import publisher as publisher_module
+from src.outbox_service.services.publisher import (
     BACKOFF_FACTOR,
     BATCH_SIZE,
     MAX_POLL_INTERVAL,
@@ -17,7 +17,6 @@ from src.outbox_service.services.publisher.publisher import (
     PollingBackoff,
     PublishResult,
 )
-
 
 @pytest.fixture
 def session_maker_mock(monkeypatch):
