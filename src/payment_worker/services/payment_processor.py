@@ -3,7 +3,7 @@ import random
 
 from sqlalchemy import update
 
-from payment_service.models.payment import Payment, PaymentStatus
+from src.payment_service.models.payment import Payment, PaymentStatus
 from src.database.database import async_session_maker
 
 
