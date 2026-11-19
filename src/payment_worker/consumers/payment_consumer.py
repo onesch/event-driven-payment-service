@@ -1,4 +1,3 @@
-import asyncio
 import logging
 from faststream import AckPolicy
 from faststream.rabbit import (
@@ -8,6 +7,7 @@ from faststream.rabbit import (
     ExchangeType,
 )
 
+from src.payment_worker.schemas.payment import PaymentCreatedEvent
 from src.payment_worker.services.payment_processor import PaymentProcessor
 from src.settings import EVENT_ROUTES, RABBITMQ_URL
 
@@ -33,34 +33,13 @@ broker = RabbitBroker(
         durable=True,
     ),
 )
-async def handle_payment(message: dict) -> None:
+async def handle_payment(message: PaymentCreatedEvent) -> None:
     """Consume payment.created events and process payments."""
 
-    payment_id = message.get("payment_id")
-
-    if payment_id is None:
-        logger.error("Received payment event without payment_id: %s", message)
-        raise ValueError("Payment event must contain payment_id")
+    payment_id = message.payment_id
 
     logger.info("Received payment event: payment_id=%s", payment_id)
 
     await PaymentProcessor.process(payment_id=payment_id)
 
     logger.info("Payment processed: payment_id=%s", payment_id)
-
-
-async def main() -> None:
-    """Start the payment consumer."""
-
-    logger.info("Starting payment consumer...")
-
-    await broker.start()
-
-    try:
-        await asyncio.Event().wait()
-    finally:
-        await broker.stop()
-
-
-if __name__ == "__main__":
-    asyncio.run(main())

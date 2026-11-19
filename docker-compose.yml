@@ -68,7 +68,7 @@ services:
 
   payment-worker:
     build: .
-    command: uv run python -m payment_worker.consumers.payment_consumer
+    command: uv run faststream run src.payment_worker.main:app
     volumes:
       - .:/app
     environment:
