@@ -1,8 +1,9 @@
 import pytest
 from unittest.mock import AsyncMock, Mock
-from faststream.rabbit import RabbitBroker
+from faststream.rabbit import RabbitBroker, TestRabbitBroker
 
 from src.payment_worker.consumers import payment_consumer as consumer_module
+from src.payment_worker.schemas.payment import PaymentCreatedEvent
 from src.payment_worker.services import payment_processor as processor_module
 
 
@@ -10,6 +11,12 @@ from src.payment_worker.services import payment_processor as processor_module
 def payment_message() -> dict:
     """``payment.created`` message body consumed by the payment worker."""
     return {"payment_id": 42}
+
+
+@pytest.fixture
+def payment_event(payment_message) -> PaymentCreatedEvent:
+    """Validated ``payment.created`` event passed to the handler."""
+    return PaymentCreatedEvent(**payment_message)
 
 
 @pytest.fixture
@@ -75,24 +82,12 @@ def processor_process(monkeypatch) -> AsyncMock:
 
 
 @pytest.fixture
-def consumer_broker(monkeypatch) -> AsyncMock:
-    """Mock the module-level RabbitMQ broker used by ``main()``."""
-    broker = AsyncMock(spec=RabbitBroker)
-    monkeypatch.setattr(consumer_module, "broker", broker)
-    return broker
+async def consumer_test_broker() -> RabbitBroker:
+    """
+    In-memory FastStream broker for the payment consumer.
 
-
-@pytest.fixture
-def consumer_event_wait(monkeypatch) -> AsyncMock:
-    """Mock ``asyncio.Event().wait()`` so the consumer loop can be stopped."""
-    wait = AsyncMock()
-    event = Mock()
-    event.wait = wait
-
-    monkeypatch.setattr(
-        consumer_module.asyncio,
-        "Event",
-        Mock(return_value=event),
-    )
-
-    return wait
+    Messages go through the real subscriber pipeline (decoding and
+    pydantic validation) without a running RabbitMQ.
+    """
+    async with TestRabbitBroker(consumer_module.broker) as broker:
+        yield broker
