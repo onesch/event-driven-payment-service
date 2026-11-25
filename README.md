@@ -1,4 +1,4 @@
-![Coverage](https://img.shields.io/badge/Coverage-96%25-brightgreen)
+![Coverage](https://img.shields.io/badge/Coverage-98%25-brightgreen)
 ![python](https://img.shields.io/badge/Python-v1.12.0-blue)
 
 ## Guide
