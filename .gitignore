@@ -1,6 +1,8 @@
 # Python-generated files
 __pycache__/
 .pytest_cache/
+.coverage
+load_test/
 
 # Virtual environments
 .venv

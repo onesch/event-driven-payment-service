@@ -8,4 +8,6 @@ COPY pyproject.toml uv.lock ./
 
 COPY . .
 
+ENV UV_PROJECT_ENVIRONMENT=/opt/venv
+
 RUN uv sync --frozen

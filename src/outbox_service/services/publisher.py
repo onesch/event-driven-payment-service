@@ -3,16 +3,12 @@ import logging
 from dataclasses import dataclass
 from sqlalchemy.exc import SQLAlchemyError
 from aio_pika.exceptions import AMQPException
-from faststream.rabbit import (
-    RabbitBroker,
-    RabbitExchange,
-    RabbitQueue,
-    ExchangeType,
-)
+from faststream.rabbit import RabbitBroker
 
 from src.database.database import async_session_maker
 from src.outbox_service.repositories.outbox import OutboxRepository
-from src.outbox_service.services.publisher.event_router import EVENT_ROUTES
+from src.rabbitmq.routes import EVENT_ROUTES
+from src.rabbitmq.topology import build_exchange, declare_topology
 from src.settings import RABBITMQ_URL
 
 logger = logging.getLogger(__name__)
@@ -72,30 +68,6 @@ class OutboxPublisher:
         self.broker = broker
         self.backoff = PollingBackoff()
 
-    async def declare_topology(self) -> None:
-        """Declare RabbitMQ exchanges, queues, and their bindings."""
-
-        # Declare each unique exchange and queue.
-        for route in set(EVENT_ROUTES.values()):
-            exchange = await self.broker.declare_exchange(
-                RabbitExchange(
-                    name=route.exchange,
-                    type=ExchangeType.DIRECT,
-                    durable=True,
-                )
-            )
-            queue = await self.broker.declare_queue(
-                RabbitQueue(
-                    name=route.queue,
-                    durable=True,
-                )
-            )
-            # Bind the queue to the exchange with the specified routing key.
-            await queue.bind(
-                exchange=exchange,
-                routing_key=route.routing_key,
-            )
-
     async def publish_pending(self) -> PublishResult:
         """Fetch and publish a batch of unpublished Outbox events."""
 
@@ -132,11 +104,7 @@ class OutboxPublisher:
             try:
                 await self.broker.publish(
                     message=event["payload"],
-                    exchange=RabbitExchange(
-                        name=route.exchange,
-                        type=ExchangeType.DIRECT,
-                        durable=True,
-                    ),
+                    exchange=build_exchange(route),
                     routing_key=route.routing_key,
                     persist=True,
                     message_id=str(event["id"]),
@@ -239,9 +207,9 @@ async def main() -> None:
     broker = RabbitBroker(url=RABBITMQ_URL)
 
     async with broker:
-        publisher = OutboxPublisher(broker)
+        await declare_topology(broker)
 
-        await publisher.declare_topology()
+        publisher = OutboxPublisher(broker)
         await publisher.run()
 
 

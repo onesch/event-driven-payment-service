@@ -1,4 +1,4 @@
-![Coverage](https://img.shields.io/badge/Coverage-96%25-brightgreen)
+![Coverage](https://img.shields.io/badge/Coverage-98%25-brightgreen)
 ![python](https://img.shields.io/badge/Python-v1.12.0-blue)
 
 ## Guide
@@ -62,7 +62,7 @@ docker compose up --build -d
 
 5.2 Running migrations inside Docker:
 ```bash
-docker compose exec api uv run alembic upgrade head
+docker compose exec payment-api uv run alembic upgrade head
 ```
 
 > Useful Docker commands:
@@ -91,13 +91,21 @@ curl -X POST http://localhost:9000/api/v1/payments/ \
   }'
 ```
 
-2. Check RabbitMQ queues
+2. Check docker logs
 
 ```bash
-docker compose exec rabbitmq rabbitmqctl list_queues name messages_ready messages_unacknowledged durable
+docker compose logs -f
 ```
 
-3. Run tests
+3. RabbitMQ Monitoring
+
+```bash
+http://127.0.0.1:15672/
+```
+> Note: Log in using the credentials configured in `.env`.
+
+4. Run tests
+
 ```
 uv run pytest
 
