@@ -62,7 +62,7 @@ docker compose up --build -d
 
 5.2 Running migrations inside Docker:
 ```bash
-docker compose exec api uv run alembic upgrade head
+docker compose exec payment-api uv run alembic upgrade head
 ```
 
 > Useful Docker commands:
