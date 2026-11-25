@@ -5,7 +5,7 @@ from faststream.rabbit import ExchangeType, RabbitBroker
 
 from src.rabbitmq import topology as topology_module
 from src.rabbitmq.topology import build_exchange, build_queue, declare_topology
-from src.settings import EventRoute
+from src.rabbitmq.routes import EventRoute
 
 ROUTE = EventRoute(
     exchange="payments",

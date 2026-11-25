@@ -7,8 +7,9 @@ from faststream.rabbit import RabbitBroker
 
 from src.database.database import async_session_maker
 from src.outbox_service.repositories.outbox import OutboxRepository
+from src.rabbitmq.routes import EVENT_ROUTES
 from src.rabbitmq.topology import build_exchange, declare_topology
-from src.settings import EVENT_ROUTES, RABBITMQ_URL
+from src.settings import RABBITMQ_URL
 
 logger = logging.getLogger(__name__)
 

@@ -9,7 +9,7 @@ from faststream.rabbit import (
     RabbitQueue,
 )
 
-from src.settings import EVENT_ROUTES, EventRoute
+from src.rabbitmq.routes import EVENT_ROUTES, EventRoute
 
 
 def build_exchange(route: EventRoute) -> RabbitExchange:

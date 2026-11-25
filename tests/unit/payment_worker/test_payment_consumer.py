@@ -4,7 +4,7 @@ import pytest
 from faststream import AckPolicy
 from pydantic import ValidationError
 
-from src.settings import EVENT_ROUTES
+from src.rabbitmq.routes import EVENT_ROUTES
 from src.rabbitmq.topology import build_exchange, build_queue
 from src.payment_worker.consumers import payment_consumer as consumer_module
 from src.payment_worker.consumers.payment_consumer import (

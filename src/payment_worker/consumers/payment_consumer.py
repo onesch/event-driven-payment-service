@@ -4,8 +4,9 @@ from faststream.rabbit import RabbitBroker
 
 from src.payment_worker.schemas.payment import PaymentCreatedEvent
 from src.payment_worker.services.payment_processor import PaymentProcessor
+from src.rabbitmq.routes import EVENT_ROUTES
 from src.rabbitmq.topology import build_exchange, build_queue
-from src.settings import EVENT_ROUTES, RABBITMQ_URL
+from src.settings import RABBITMQ_URL
 
 logger = logging.getLogger(__name__)
 

@@ -6,7 +6,7 @@ from aio_pika.exceptions import AMQPException
 from faststream.rabbit import ExchangeType
 from sqlalchemy.exc import SQLAlchemyError
 
-from src.settings import EVENT_ROUTES
+from src.rabbitmq.routes import EVENT_ROUTES
 from src.outbox_service.services import publisher as publisher_module
 from src.outbox_service.services.publisher import (
     BACKOFF_FACTOR,
