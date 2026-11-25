@@ -1,10 +1,13 @@
 import pytest
+from collections.abc import AsyncIterator
 from unittest.mock import AsyncMock, Mock
 from faststream.rabbit import RabbitBroker, TestRabbitBroker
+from faststream.rabbit.message import RabbitMessage
 
 from src.payment_worker.consumers import payment_consumer as consumer_module
 from src.payment_worker.schemas.payment import PaymentCreatedEvent
 from src.payment_worker.services import payment_processor as processor_module
+from src.rabbitmq.retry import get_retry_count
 
 
 @pytest.fixture
@@ -82,7 +85,29 @@ def processor_process(monkeypatch) -> AsyncMock:
 
 
 @pytest.fixture
-async def consumer_test_broker() -> RabbitBroker:
+def raw_payment_message() -> Mock:
+    """
+    Consumed RabbitMQ message passed to the handler alongside the event.
+
+    Defaults to the first delivery (no ``x-retry-count`` header).
+    """
+    message = Mock(spec=RabbitMessage)
+    message.headers = {}
+    return message
+
+
+@pytest.fixture
+def retry_publisher(monkeypatch) -> AsyncMock:
+    """Mock ``publish_retry`` used by the consumer handler."""
+    publish_retry = AsyncMock(
+        side_effect=lambda broker, message, route: get_retry_count(message) + 1
+    )
+    monkeypatch.setattr(consumer_module, "publish_retry", publish_retry)
+    return publish_retry
+
+
+@pytest.fixture
+async def consumer_test_broker() -> AsyncIterator[RabbitBroker]:
     """
     In-memory FastStream broker for the payment consumer.
 
